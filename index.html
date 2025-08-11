@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Authentication Form</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        .level-indicator {
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+            font-weight: 600;
+        }
+        .btn {
+            display: flex;
+            justify-content: space-around;
+            background: #f8f8f8;
+            padding: 10px;
+        }
+        .tab {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .tab.active {
+            color: #007bff;
+            font-weight: 600;
+            border-bottom: 2px solid #007bff;
+        }
+        .form-section {
+            display: flex;
+            width: 300%; /* For three forms */
+            transition: transform 0.5s ease-in-out;
+        }
+        .form-box {
+            width: 33.33%;
+            padding: 20px;
+            text-align: center;
+        }
+        .fun-message {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .login-btn {
+            background: #007bff;
+            color: white;
+        }
+        .google-btn {
+            background: #db4437;
+            color: white;
+            margin-top: 10px;
+        }
+        .or {
+            margin: 10px 0;
+            color: #aaa;
+        }
+        .progress-container {
+            background: #e0e0e0;
+            border-radius: 5px;
+            height: 5px;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            height: 100%;
+            width: 0;
+            transition: width 0.3s;
+            border-radius: 5px;
+        }
+        /* Sliding positions */
+        .form-section.login {
+            transform: translateX(0);
+        }
+        .form-section.signup {
+            transform: translateX(-33.33%);
+        }
+        .form-section.reset {
+            transform: translateX(-66.66%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="level-indicator">Level 1: Authentication</div>
+        <div class="btn">
+            <button class="tab active" data-tab="login">Login</button>
+            <button class="tab" data-tab="signup">Signup</button>
+            <button class="tab" data-tab="reset">Reset Password</button>
+        </div>
+        <div class="form-section login">
+            <!-- Login Form -->
+            <div class="form-box" id="login-box">
+                <div class="fun-message">Start your coding adventure!</div>
+                <div class="progress-container"><div class="progress-bar"></div></div>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button class="login-btn">Login</button>
+                <p class="or">or</p>
+                <button class="google-btn">Continue with Google</button>
+            </div>
+            <!-- Signup Form -->
+            <div class="form-box" id="signup-box">
+                <div class="fun-message">Join the coders' guild!</div>
+                <div class="progress-container"><div class="progress-bar"></div></div>
+                <input type="text" placeholder="Full Name" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button class="login-btn">Signup</button>
+                <p class="or">or</p>
+                <button class="google-btn">Continue with Google</button>
+            </div>
+            <!-- Reset Password Form -->
+            <div class="form-box" id="reset-box">
+                <div class="fun-message">Recover your powers!</div>
+                <div class="progress-container"><div class="progress-bar"></div></div>
+                <input type="email" placeholder="Email" required>
+                <button class="login-btn">Reset Password</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Tab switching and sliding
+        const tabs = document.querySelectorAll('.tab');
+        const formSection = document.querySelector('.form-section');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const tabName = tab.dataset.tab;
+                formSection.classList.remove('login', 'signup', 'reset');
+                formSection.classList.add(tabName);
+            });
+        });
+
+        // Progress bar for each form (gamification)
+        function updateProgress(formId) {
+            const form = document.getElementById(formId);
+            const inputs = form.querySelectorAll('input[required]');
+            const progressBar = form.querySelector('.progress-bar');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    let filled = 0;
+                    inputs.forEach(inp => {
+                        if (inp.value.trim() !== '') filled++;
+                    });
+                    const progress = (filled / inputs.length) * 100;
+                    progressBar.style.width = `${progress}%`;
+                });
+            });
+        }
+        updateProgress('login-box');
+        updateProgress('signup-box');
+        updateProgress('reset-box');
+
+        // Placeholder submit handlers (add real logic as needed)
+        document.querySelectorAll('button.login-btn, button.google-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Form submitted! (Placeholder action)');
+            });
+        });
+    </script>
+</body>
+</html>
