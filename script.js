@@ -100,7 +100,6 @@
             draw();
         }
 
-        // Google button placeholder
         document.querySelectorAll('.google-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
