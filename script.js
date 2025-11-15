@@ -41,7 +41,7 @@
                     });
                     const progress = (filled / inputs.length) * 100;
                     progressBar.style.width = `${progress}%`;
-                    xpFill.style.width = `${progress / 3}%`; // Global XP fills slower
+                    xpFill.style.width = `${progress / 3}%`; 
                 });
             });
         }
